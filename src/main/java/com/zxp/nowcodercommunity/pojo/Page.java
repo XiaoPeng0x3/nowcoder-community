@@ -14,6 +14,20 @@ public class Page {
     // 查询路径(用于复用分页链接)
     private String path;
 
+    public Page(int current, int limit, int rows, String path) {
+        this.current = current;
+        this.limit = limit;
+        this.rows = rows;
+        this.path = path;
+    }
+
+    public Page(int current, int limit, int rows) {
+        this.current = current;
+        this.limit = limit;
+        this.rows = rows;
+    }
+
+
     public int getCurrent() {
         return current;
     }

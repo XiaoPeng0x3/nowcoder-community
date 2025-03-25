@@ -17,7 +17,7 @@ public class Result<T> {
 
     public static <T> Result<T> success() {
         Result<T> result = new Result<T>();
-        result.code = 1;
+        result.code = 200;
         return result;
     }
 
