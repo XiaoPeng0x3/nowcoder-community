@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/community/index")
@@ -30,29 +31,30 @@ public class HomeController {
     private UserService userService;
 
     @GetMapping
-    public Result<List<Map<String, Object>>> getDiscussPosts(@RequestParam(defaultValue = "1") int current, @RequestParam(defaultValue = "5")int limit, @RequestParam(defaultValue = "0")int orderMode) {
+    public Result<List<Map<String, Object>>> getDiscussPosts(@RequestParam(defaultValue = "1") int current, @RequestParam(defaultValue = "5") int limit, @RequestParam(defaultValue = "0") int orderMode) {
+        // 构造 Page 对象并初始化属性
+        Page page = new Page(current, limit, homeService.getTotalDiscussPosts(0));
 
-        // 构造page
-        Page page = new Page();
-        page.setCurrent(current);
-        page.setLimit(limit);
-        page.setRows(homeService.getTotalDiscussPosts(0));
+        // 获取帖子列表
         List<DiscussPost> list = homeService.getDiscussPosts(0, page.getCurrent(), page.getLimit(), 0);
-        List<Map<String,Object>> data = new ArrayList();
-        for (DiscussPost post : list) {
-            Map<String,Object> map = new HashMap<>();
+
+        // 使用 Stream API 简化数据封装
+        List<Map<String, Object>> data = list.stream().map(post -> {
+            Map<String, Object> map = new HashMap<>();
             map.put("post", post);
-            // 获取User对象
+
+            // 获取用户信息并拷贝属性
             User user = userService.getUserById(post.getUserId());
-            // 将uer对象拷贝到vo里面
             UserVo userVo = new UserVo();
             BeanUtils.copyProperties(user, userVo);
-            // 添加到data里面
             map.put("user", userVo);
-            data.add(map);
-        }
+
+            return map;
+        }).collect(Collectors.toList());
+
         return Result.success(data);
     }
+
 
     @GetMapping("/count")
     public Result<Integer> countDiscussPosts() {
