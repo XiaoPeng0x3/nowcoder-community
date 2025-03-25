@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zxp.nowcodercommunity.mapper.HomeMapper">
+
+    <sql id="commonField">
+        id, user_id, title, content, type, status, create_time, comment_count, score
+    </sql>
+
+    <select id="getDiscussPosts" resultType="com.zxp.nowcodercommunity.pojo.DiscussPost">
+        select <include refid="commonField"/>
+        from discuss_post
+        where status != 2
+        <if test="userId != 0">
+            and user_id = #{userId}
+        </if>
+        order by type desc,
+        <if test="orderMode == 1">
+            score desc,
+        </if>
+        create_time desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="getTotalDiscussPosts" resultType="Integer">
+        select count(*)
+        from discuss_post
+        where status != 2
+        <if test="userId != 0">
+            and user_id = #{userId}
+        </if>
+    </select>
+
+</mapper>
