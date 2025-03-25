@@ -1,18 +1,10 @@
 package com.zxp.nowcodercommunity.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
-public class DiscussPost {
-
-    private int id;
-    private int userId;
-    private String title;
-    private String content;
-    private int type;
-    private int status;
-    private Date createTime;
-    private int commentCount;
-    private double score;
+push    
 
     public int getId() {
         return id;
