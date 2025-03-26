@@ -6,4 +6,6 @@ public interface UserService {
 
     User getUserById(Integer userId);
 
+    String registerUser(User user);
+
 }

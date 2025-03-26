@@ -9,10 +9,19 @@
         id, username, password, salt, email, type, status, activation_code, header_url, create_time
     </sql>
 
+    <sql id="insertField">
+        username, password, salt, email, type, status, activation_code, header_url, create_time
+    </sql>
+
     <select id="getUserById" resultType="com.zxp.nowcodercommunity.pojo.User">
         select <include refid="commonField"/>
         from user
         where status != 2 and id = #{userId}
     </select>
 
+    <insert id="insertUser">
+        insert into
+        user(<include refid="insertField"/>)
+        values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime})
+    </insert>
 </mapper>

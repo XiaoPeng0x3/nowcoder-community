@@ -1,5 +1,6 @@
 package com.zxp.nowcodercommunity.pojo;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class User {
@@ -13,7 +14,7 @@ public class User {
     private int status;
     private String activationCode;
     private String headerUrl;
-    private Date createTime;
+    private LocalDateTime createTime;
 
     public int getId() {
         return id;
@@ -87,11 +88,11 @@ public class User {
         this.headerUrl = headerUrl;
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 
