@@ -4,7 +4,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
-push    
+public class DiscussPost {
+
+    private int id;
+    private int userId;
+    private String title;
+    private String content;
+    private int type;
+    private int status;
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date createTime;
+    private int commentCount;
+    private double score;
 
     public int getId() {
         return id;

@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/community/index")
+@RequestMapping("/index")
 public class HomeController {
 
     @Autowired

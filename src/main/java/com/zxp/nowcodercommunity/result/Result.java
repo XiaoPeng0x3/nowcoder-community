@@ -15,6 +15,11 @@ public class Result<T> {
     public Result() {
     }
 
+    public Result(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
     public static <T> Result<T> success() {
         Result<T> result = new Result<T>();
         result.code = 200;
@@ -31,7 +36,14 @@ public class Result<T> {
     public static <T> Result<T> error(String msg) {
         Result result = new Result();
         result.msg = msg;
-        result.code = 0;
+        result.code = 400;
+        return result;
+    }
+
+    public static <T> Result<T> error(Integer code, String msg) {
+        Result result = new Result();
+        result.code = code;
+        result.msg = msg;
         return result;
     }
 
