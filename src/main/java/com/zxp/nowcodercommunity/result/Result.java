@@ -40,6 +40,13 @@ public class Result<T> {
         return result;
     }
 
+    public static <T> Result<T> error(T object) {
+        Result result = new Result();
+        result.data = object;
+        result.code = 400;
+        return result;
+    }
+
     public static <T> Result<T> error(Integer code, String msg) {
         Result result = new Result();
         result.code = code;
