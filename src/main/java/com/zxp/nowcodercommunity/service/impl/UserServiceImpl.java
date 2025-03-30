@@ -19,20 +19,23 @@ import java.util.Random;
 @Service
 public class UserServiceImpl implements UserService {
     // 调用来自mapper的接口
-    @Autowired
-    UserMapper userMapper;
+    private final UserMapper userMapper;
 
-    @Autowired
-    private TemplateEngine templateEngine;
+    private final TemplateEngine templateEngine;
 
-    @Autowired
-    private EmailSendService emailSendService;
+    private final EmailSendService emailSendService;
 
     @Value("${community.path.domain}")
     private String domain;
 
     @Value("${server.servlet.context-path}")
     private String contextPath;
+
+    public UserServiceImpl(UserMapper userMapper, TemplateEngine templateEngine, EmailSendService emailSendService) {
+        this.userMapper = userMapper;
+        this.templateEngine = templateEngine;
+        this.emailSendService = emailSendService;
+    }
 
     @Override
     public User getUserById(Integer userId) {

@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +22,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/index")
 public class HomeController {
 
-    @Autowired
-    private HomeService homeService;
+    private final HomeService homeService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public HomeController(HomeService homeService, UserService userService) {
+        this.homeService = homeService;
+        this.userService = userService;
+    }
 
     @GetMapping
     public Result<List<Map<String, Object>>> getDiscussPosts(@RequestParam(defaultValue = "1") int current, @RequestParam(defaultValue = "5") int limit, @RequestParam(defaultValue = "0") int orderMode) {

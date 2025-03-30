@@ -10,8 +10,11 @@ import java.util.List;
 @Service
 public class HomeServiceImpl implements HomeService {
 
-    @Autowired
-    private HomeMapper homeMapper;
+    private final HomeMapper homeMapper;
+
+    public HomeServiceImpl(HomeMapper homeMapper) {
+        this.homeMapper = homeMapper;
+    }
 
     @Override
     public List<DiscussPost> getDiscussPosts(int userId, int current, int limit, int orderMode) {
