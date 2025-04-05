@@ -1,5 +1,7 @@
 package com.zxp.nowcodercommunity.result;
 
+import org.springframework.data.redis.connection.DataType;
+
 public class Result<T> {
 
     private Integer code; //编码：1成功，0和其它数字为失败
@@ -52,6 +54,21 @@ public class Result<T> {
         result.code = code;
         result.msg = msg;
         return result;
+    }
+
+    public static Result error() {
+        Result result = new Result();
+        result.code = 400;
+        return result;
+    }
+    public Result<T> code(Integer code){
+        this.setCode(code);
+        return this;
+    }
+
+    public Result<T> message(String msg){
+        this.setMsg(msg);
+        return this;
     }
 
     public Integer getCode() {
