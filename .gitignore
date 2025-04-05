@@ -39,4 +39,5 @@ mvnw
 mvnw.cmd
 .gitattributes
 HELP.md
+./src/main/resources/application.yml
 
