@@ -1,6 +1,7 @@
 package com.zxp.nowcodercommunity.util;
 
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -69,7 +70,8 @@ public class RedisCache {
      * @param <T>
      */
     public <T> T getCacheObject (final String key) {
-        return (T) redisTemplate.opsForValue().get(key);
+        ValueOperations<String, T> valueOperations = redisTemplate.opsForValue();
+        return valueOperations.get(key);
     }
 
     /**

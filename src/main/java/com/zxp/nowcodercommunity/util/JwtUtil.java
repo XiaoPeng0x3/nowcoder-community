@@ -8,6 +8,8 @@ import io.jsonwebtoken.jackson.io.JacksonSerializer;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Component;
@@ -17,10 +19,12 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static com.zxp.nowcodercommunity.constant.LoginConstant.LOGIN_USER_KEY;
+import static com.zxp.nowcodercommunity.constant.LoginConstant.TOKEN_PREFIX;
 
 @Component
 public class JwtUtil {
 
+    private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
     /**
      * 设置header
      */
@@ -45,7 +49,7 @@ public class JwtUtil {
 
     private static final long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
 
-    private RedisCache redisCache;
+    private final RedisCache redisCache;
 
     public JwtUtil(RedisCache redisCache) {
         this.redisCache = redisCache;
@@ -62,23 +66,25 @@ public class JwtUtil {
                  String uuid = (String) claims.get(LOGIN_USER_KEY);
                  // 获取 Redis 缓存中的 key
                  String userKey = RedisKeyUtil.getTokenKey(uuid);
-                 return redisCache.getCacheObject(userKey);
-             } catch (Exception ignored) {
-
-             }
+                 LoginUser userDebug = redisCache.getCacheObject(userKey);
+                 log.info("user debug: {}", userDebug);
+                 return userDebug;
+             } catch (Exception e) {
+            log.error("获取登录用户失败", e);
+        }
          }
          // 对接口进行判断
          return null;
 
      }
 
-     public String getToken(HttpServletRequest request) {
-         String token = request.getHeader("Authorization");
-         if (token != null && token.startsWith("Bearer ")) { // token的形式
-             token = token.substring(7);
-         }
-         return token;
-     }
+    private String getToken(HttpServletRequest request) {
+        String token = request.getHeader(header);
+        if (StringUtils.isNotEmpty(token) && token.startsWith(TOKEN_PREFIX)) {
+            token = token.replace(TOKEN_PREFIX, "");
+        }
+        return token;
+    }
 
     public Claims parseToken(String token) {
         return Jwts.parserBuilder()

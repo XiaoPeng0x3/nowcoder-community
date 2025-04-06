@@ -56,6 +56,13 @@ public class Result<T> {
         return result;
     }
 
+    public static <T> Result<T> error(T data, String msg) {
+        Result result = new Result();
+        result.data = data;
+        result.msg = msg;
+        return result;
+    }
+
     public static Result error() {
         Result result = new Result();
         result.code = 400;

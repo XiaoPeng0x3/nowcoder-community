@@ -2,6 +2,7 @@ package com.zxp.nowcodercommunity.security.handler;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.zxp.nowcodercommunity.result.Result;
+import com.zxp.nowcodercommunity.security.model.LoginUser;
 import com.zxp.nowcodercommunity.util.JwtUtil;
 import com.zxp.nowcodercommunity.util.WebUtil;
 import jakarta.servlet.ServletException;
@@ -25,10 +26,10 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
         // 删除jwt
 
         // 得到token
-        String token = jwtUtil.getToken(request);
-        if (token != null) {
+        LoginUser loginUser = jwtUtil.getLoginUser(request);
+        if (loginUser != null) {
             // 删除token
-            jwtUtil.removeToken(token);
+            jwtUtil.removeToken(loginUser.getToken());
         }
         WebUtil.renderString(response, JSONObject.toJSONString(Result.success().message("退出成功")));
 
