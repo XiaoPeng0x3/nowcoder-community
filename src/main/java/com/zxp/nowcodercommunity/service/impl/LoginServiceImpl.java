@@ -5,6 +5,7 @@ import com.zxp.nowcodercommunity.security.core.AuthenticationContextHolder;
 import com.zxp.nowcodercommunity.security.model.LoginUser;
 import com.zxp.nowcodercommunity.service.LoginService;
 import com.zxp.nowcodercommunity.util.JwtUtil;
+import com.zxp.nowcodercommunity.util.RedisCache;
 import com.zxp.nowcodercommunity.vo.UserVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.*;
@@ -20,10 +21,12 @@ public class LoginServiceImpl implements LoginService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+    private final RedisCache redisCache;
 
-    public LoginServiceImpl(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public LoginServiceImpl(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RedisCache redisCache) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.redisCache = redisCache;
     }
 
 

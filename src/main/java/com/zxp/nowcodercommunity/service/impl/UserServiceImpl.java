@@ -3,10 +3,14 @@ package com.zxp.nowcodercommunity.service.impl;
 import com.zxp.nowcodercommunity.constant.RegisterConstants;
 import com.zxp.nowcodercommunity.mapper.UserMapper;
 import com.zxp.nowcodercommunity.pojo.User;
+import com.zxp.nowcodercommunity.security.model.LoginUser;
+import com.zxp.nowcodercommunity.security.util.SecurityUtil;
 import com.zxp.nowcodercommunity.service.UserService;
 import com.zxp.nowcodercommunity.util.CommunityUtil;
 import com.zxp.nowcodercommunity.util.EmailSendService;
 import com.zxp.nowcodercommunity.util.check.UserCheck;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +22,7 @@ import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService {
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     // 调用来自mapper的接口
     private final UserMapper userMapper;
 
@@ -106,6 +111,15 @@ public class UserServiceImpl implements UserService {
         emailSendService.sendSimpleMail(user.getEmail(), "激活账号", html);
 
         return RegisterConstants.SUCCESS;
+    }
+
+    @Override
+    public Integer updateUserHeaderUrl(String headerUrl) {
+        log.info("调用mapper接口 update header url: " + headerUrl);
+        // 当前用户信息可以在Spring security Holder 中查询到
+        Integer userId = SecurityUtil.getUserId(); // 获取用户的id
+        // 调用mapper
+        return userMapper.updateUserHeaderUrl(userId, headerUrl);
     }
 }
 

@@ -24,4 +24,10 @@
         user(<include refid="insertField"/>)
         values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime})
     </insert>
+
+    <update id="updateUserHeaderUrl">
+        update user
+        set header_url = #{headerUrl}
+        where id = #{userId}
+    </update>
 </mapper>

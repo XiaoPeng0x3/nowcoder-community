@@ -1,5 +1,6 @@
 package com.zxp.nowcodercommunity.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.zxp.nowcodercommunity.pojo.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +17,8 @@ import static com.zxp.nowcodercommunity.constant.LoginConstant.*;
 import static com.zxp.nowcodercommunity.constant.RegisterConstants.USER_ADMIN;
 import static com.zxp.nowcodercommunity.constant.RegisterConstants.USER_COMMON;
 
-public class LoginUser implements UserDetails {
+@JsonIgnoreProperties({"username", "password", "enabled","accountNonExpired", "accountNonLocked", "credentialsNonExpired", "authorities"})
+public class LoginUser implements UserDetails, Serializable {
     /**
      * 用户
      */
