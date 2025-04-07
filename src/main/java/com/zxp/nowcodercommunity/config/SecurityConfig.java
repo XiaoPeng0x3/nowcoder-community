@@ -87,6 +87,7 @@ public class SecurityConfig {
                         AUTHORITY_ADMIN,
                         AUTHORITY_MODERATOR
                 ) // 只有帖子的版主和管理员拥有这些权限
+                        .requestMatchers("/setting").authenticated()
                 .anyRequest().permitAll() // 剩下的接口所有用户(包括未登录的)也可以访问
         )
                 .csrf(AbstractHttpConfigurer::disable) // 禁用 CSRF 保护，使用JWT
