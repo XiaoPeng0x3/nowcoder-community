@@ -2,6 +2,7 @@ package com.zxp.nowcodercommunity.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class DiscussPost {
@@ -13,7 +14,7 @@ public class DiscussPost {
     private int type;
     private int status;
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    private Date createTime;
+    private LocalDateTime createTime;
     private int commentCount;
     private double score;
 
@@ -65,11 +66,11 @@ public class DiscussPost {
         this.status = status;
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 
