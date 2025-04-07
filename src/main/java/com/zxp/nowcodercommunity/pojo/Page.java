@@ -27,6 +27,8 @@ public class Page {
         this.rows = rows;
     }
 
+    public Page() {}
+
 
     public int getCurrent() {
         return current;
