@@ -13,4 +13,8 @@ public interface DiscussPostService {
     Integer findCountById(int userId);
 
     List<DiscussPost> findPostsById(int userId, int current, int limit, int orderMode);
+
+    Integer updatePostType(Integer userId, Integer type);
+
+    Integer updateStatus(int id, byte status);
 }

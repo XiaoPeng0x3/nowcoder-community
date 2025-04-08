@@ -17,4 +17,10 @@ public interface DiscussPostMapper {
     Integer findCountById(int userId);
 
     List<DiscussPost> findPostsById(int userId, int offset, int limit, int orderMode);
+
+    Integer updatePostType(Integer id, Integer type);
+
+    Integer updateStatus(Integer id, byte status);
+
+    void updateCommentCount(Integer id, Integer commentCount);
 }

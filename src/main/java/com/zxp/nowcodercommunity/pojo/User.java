@@ -1,5 +1,7 @@
 package com.zxp.nowcodercommunity.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -15,6 +17,7 @@ public class User implements Serializable {
     private int status;
     private String activationCode;
     private String headerUrl;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     public int getId() {

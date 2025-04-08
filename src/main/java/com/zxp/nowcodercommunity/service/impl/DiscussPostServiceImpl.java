@@ -60,4 +60,14 @@ public class DiscussPostServiceImpl implements DiscussPostService {
         log.info("ans {}", ans);
         return ans;
     }
+
+    @Override
+    public Integer updatePostType(Integer id, Integer type) {
+        return discussPostMapper.updatePostType(id, type);
+    }
+
+    @Override
+    public Integer updateStatus(int id, byte status) {
+        return discussPostMapper.updateStatus(id, status);
+    }
 }
