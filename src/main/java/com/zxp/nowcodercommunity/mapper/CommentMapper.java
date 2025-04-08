@@ -1,6 +1,7 @@
 package com.zxp.nowcodercommunity.mapper;
 
 import com.zxp.nowcodercommunity.pojo.Comment;
+import com.zxp.nowcodercommunity.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,4 +20,7 @@ public interface CommentMapper {
      *  根据条件查询数量
      */
     Integer selectCountByEntity(int entityId, int entityType);
+
+    Integer insertComment(Comment comment);
+
 }

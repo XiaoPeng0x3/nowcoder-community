@@ -10,9 +10,13 @@ import java.time.LocalDateTime;
 public class Comment {
 
     private Integer id;
+    // 发布评论的人
     private Integer userId;
+    // 评论的类型，包含回帖和底下用户之间的回复
     private Byte entityType;
+    // 帖子的id
     private Integer entityId;
+    // 被回复的userid
     private Integer targetId;
     private String content;
     private Byte status;
