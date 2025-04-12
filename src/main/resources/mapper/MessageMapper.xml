@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zxp.nowcodercommunity.mapper.MessageMapper">
+
+    <sql id="commonFieldWithId">
+        id, from_id, to_id, conversation_id, content, status, create_time
+    </sql>
+    
+    <sql id="commonField">
+        from_id, to_id, conversation_id, content, status, create_time
+    </sql>
+    
+<!--    根据用户id查询消息数量-->
+    
+    <select id="selectConversationCount" resultType="Integer">
+        select count(m.max_id)
+        from (select max(id) as max_id from message
+        where status != 2
+        and from_id != 1
+        and (from_id = #{userId} or to_id = #{userId})
+        group by conversation_id) as m
+    </select>
+
+    <select id="findConversations" resultType="Message">
+        select <include refid="commonFieldWithId"/>
+        from message
+        where id
+        in (select max(id) from message
+         where status != 2
+           and from_id != 1
+           and (from_id = #{userId} or to_id = #{userId})
+         group by conversation_id)
+    </select>
+
+    <select id="findLetterCount" resultType="Integer">
+        select count(*)
+        from message
+        where status != 2
+        and conversation_id = #{conversationId}
+    </select>
+
+    <select id="findLetterUnreadCount" resultType="Integer">
+        select count(*)
+        from message
+        where status != 2
+        and to_id = #{userId}
+        and conversation_id = #{conversationId}
+    </select>
+    
+</mapper>
