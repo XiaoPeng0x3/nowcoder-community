@@ -44,6 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Integer userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("userId cannot be null");
+        }
         return userMapper.getUserById(userId);
     }
 
