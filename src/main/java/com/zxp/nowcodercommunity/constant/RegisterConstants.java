@@ -40,27 +40,27 @@ public class RegisterConstants {
     /**
      * 普通用户
      */
-    public static final int USER_COMMON = 0;
+    public static final Byte USER_COMMON = 0;
 
     /**
      * 管理员
      */
-    public static final int USER_ADMIN = 1;
+    public static final Byte USER_ADMIN = 1;
 
     /**
      * 版主
      */
-    public static final int USER_HOST = 2;
+    public static final Byte USER_HOST = 2;
 
     /**
      * 设置用户的未激活状态
      */
-    public static final int USER_DEACTIVATE = 0;
+    public static final Byte USER_DEACTIVATE = 0;
 
     /**
      * 设置用户的激活状态
      */
-    public static final int USER_ACTIVATE = 1;
+    public static final Byte USER_ACTIVATE = 1;
 
     /**
      * 注册成功

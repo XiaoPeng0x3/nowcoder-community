@@ -1,5 +1,6 @@
 package com.zxp.nowcodercommunity.util;
 
+import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
@@ -113,5 +114,19 @@ public class RedisCache {
     public boolean deleteObject(final String key)
     {
         return redisTemplate.delete(key);
+    }
+
+    /**
+     * 缓存Set元素
+     *
+     * @param key 缓存键值
+     * @param value 缓存的数据
+     * @return 缓存数据的对象
+     */
+    public <T> BoundSetOperations<String, T> setCacheSet(final String key, final T value)
+    {
+        BoundSetOperations<String, T> setOperation = redisTemplate.boundSetOps(key);
+        setOperation.add(value);
+        return setOperation;
     }
 }
