@@ -8,13 +8,13 @@ import java.util.Date;
 
 public class User implements Serializable {
 
-    private int id;
+    private Integer id;
     private String username;
     private String password;
     private String salt;
     private String email;
-    private int type;
-    private int status;
+    private Byte type;
+    private Byte status;
     private String activationCode;
     private String headerUrl;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -64,7 +64,7 @@ public class User implements Serializable {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Byte type) {
         this.type = type;
     }
 
@@ -72,7 +72,7 @@ public class User implements Serializable {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 
