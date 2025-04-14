@@ -49,5 +49,64 @@
         and to_id = #{userId}
         and conversation_id = #{conversationId}
     </select>
+
+    <insert id="addMessage" parameterType="Message">
+        insert into message(<include refid="commonField"/>)
+        values (#{fromId}, #{toId}, #{conversationId}, #{content}, #{status}, #{createTime})
+    </insert>
+
+    <select id="selectLatestNotice" resultType="Message">
+        select <include refid="commonFieldWithId"/>
+        from message
+        where id
+        in (
+            select max(id)
+            from message
+            where status != 2
+            and from_id = 1
+            and to_id = #{userId}
+            and conversation_id = #{topic}
+           )
+    </select>
+
+    <select id="selectNoticeCount" resultType="Integer">
+        select count(id)
+        from message
+        where status != 2
+          and from_id = 1
+          and to_id = #{userId}
+          and conversation_id = #{topic}
+    </select>
+
+    <select id="selectNoticeUnreadCount" resultType="Integer">
+        select count(id)
+        from message
+        where status != 2
+          and from_id = 1
+          and to_id = #{userId}
+          <if test="topic != null">
+              and conversation_id = #{topic}
+          </if>
+    </select>
+
+    <select id="findNotices" resultType="Message">
+        select <include refid="commonFieldWithId"/>
+        from message
+        where status != 2
+        and from_id = 1
+        and to_id = #{userId}
+        and conversation_id = #{topic}
+        order by create_time desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <update id="readMessages" parameterType="Integer">
+        update message
+        set status = #{status}
+        where id in
+            <foreach collection="unreadNoticeIds" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+    </update>
     
 </mapper>

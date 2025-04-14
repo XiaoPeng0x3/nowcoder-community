@@ -20,7 +20,6 @@ public class MessageServiceImpl implements MessageService {
     /**
      * 根据用户id来查看最新的消息数
      * @param userId
-     * @return
      */
     @Override
     public Integer selectConversationCount(Integer userId) {
@@ -29,10 +28,6 @@ public class MessageServiceImpl implements MessageService {
 
     /**
      *  分页显示用户所有的消息
-     * @param userId
-     * @param offset
-     * @param limit
-     * @return
      */
     @Override
     public List<Message> findConversations(Integer userId, int offset, int limit) {
@@ -48,5 +43,35 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Integer findLetterUnreadCount(Integer userId, String conversationId) {
         return messageMapper.findLetterUnreadCount(userId, conversationId);
+    }
+
+    @Override
+    public Integer addMessage(Message message) {
+        return messageMapper.addMessage(message);
+    }
+
+    @Override
+    public Message findLatestNotice(Integer userId, String topic) {
+        return messageMapper.selectLatestNotice(userId, topic);
+    }
+
+    @Override
+    public Integer findNoticeCount(Integer userId, String topic) {
+        return messageMapper.selectNoticeCount(userId, topic);
+    }
+
+    @Override
+    public Integer findNoticeUnreadCount(Integer userId, String topic) {
+        return messageMapper.selectNoticeUnreadCount(userId, topic);
+    }
+
+    @Override
+    public List<Message> findNotices(int userId, String topic, int offset, int limit) {
+        return messageMapper.findNotices(userId, topic, offset, limit);
+    }
+
+    @Override
+    public int readMessages(List<Integer> unreadNoticeIds) {
+        return messageMapper.readMessages(unreadNoticeIds, (byte)1);
     }
 }
