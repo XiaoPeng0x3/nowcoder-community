@@ -23,4 +23,5 @@ public interface CommentMapper {
 
     Integer insertComment(Comment comment);
 
+    Comment findCommentById(Integer id);
 }

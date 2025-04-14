@@ -1,6 +1,7 @@
 package com.zxp.nowcodercommunity.service.impl;
 
 import com.github.houbb.sensitive.word.core.SensitiveWordHelper;
+import com.zxp.nowcodercommunity.annotation.AutoCreateTime;
 import com.zxp.nowcodercommunity.mapper.CommentMapper;
 import com.zxp.nowcodercommunity.mapper.DiscussPostMapper;
 import com.zxp.nowcodercommunity.pojo.Comment;
@@ -46,6 +47,7 @@ public class CommentServiceImpl implements CommentService {
     public Integer findCommentCountByEntity(int entityId, int entityType) {
         return commentMapper.selectCountByEntity(entityId, entityType);
     }
+    @AutoCreateTime
     @Override
     public Integer insertComment(Comment comment) {
         // 将comment中的敏感词过滤
@@ -63,5 +65,10 @@ public class CommentServiceImpl implements CommentService {
             discussPostMapper.updateCommentCount(comment.getEntityId(), count + 1);
         }
         return commentMapper.insertComment(comment);
+    }
+
+    @Override
+    public Comment findCommentById(Integer id) {
+        return commentMapper.findCommentById(id);
     }
 }

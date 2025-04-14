@@ -1,6 +1,8 @@
 package com.zxp.nowcodercommunity.controller;
 
 import com.zxp.nowcodercommunity.dto.FollowDto;
+import com.zxp.nowcodercommunity.event.EventProducer;
+import com.zxp.nowcodercommunity.pojo.Event;
 import com.zxp.nowcodercommunity.pojo.Page;
 import com.zxp.nowcodercommunity.result.Result;
 import com.zxp.nowcodercommunity.security.util.SecurityUtil;
@@ -9,15 +11,19 @@ import com.zxp.nowcodercommunity.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import static com.zxp.nowcodercommunity.constant.LoginConstant.ENTITY_TYPE_USER;
+import static com.zxp.nowcodercommunity.constant.LoginConstant.TOPIC_FOLLOW;
 
 @RestController
 public class FollowController {
 
     private final FollowService followService;
     private final UserService userService;
-    public FollowController(FollowService followService, UserService userService) {
+    private final EventProducer eventProducer;
+
+    public FollowController(FollowService followService, UserService userService, EventProducer eventProducer) {
         this.followService = followService;
         this.userService = userService;
+        this.eventProducer = eventProducer;
     }
 
     /**
@@ -29,6 +35,15 @@ public class FollowController {
     public Result<Object> follow(@RequestBody FollowDto followDto) {
         // 执行关注
         followService.follow(SecurityUtil.getUserId(), followDto.getEntityId(), followDto.getEntityType());
+        // 触发关注事件
+        Event event = new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setEntityId(followDto.getEntityId())
+                .setEntityType(followDto.getEntityType())
+                .setUserId(SecurityUtil.getUserId())
+                .setEntityUserId(followDto.getEntityId());
+        eventProducer.fireEvent(event);
+
         return Result.success();
     }
 

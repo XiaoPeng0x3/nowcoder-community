@@ -35,4 +35,10 @@
         values (#{userId}, #{entityType}, #{entityId}, #{targetId}, #{content}, #{status}, #{createTime})
     </insert>
 
+    <select id="findCommentById" resultType="Comment">
+        select <include refid="commonFieldWithId"/>
+        from comment
+        where id = #{id}
+    </select>
+
 </mapper>
