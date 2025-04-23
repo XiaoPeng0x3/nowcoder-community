@@ -40,5 +40,5 @@ mvnw.cmd
 .gitattributes
 HELP.md
 /src/main/resources/application.yml
-./start_sh.txt
+start_sh.txt
 
