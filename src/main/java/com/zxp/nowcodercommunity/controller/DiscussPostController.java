@@ -2,10 +2,9 @@ package com.zxp.nowcodercommunity.controller;
 
 import com.zxp.nowcodercommunity.annotation.AutoCreateTime;
 import com.zxp.nowcodercommunity.constant.DiscussPostConstant;
-import com.zxp.nowcodercommunity.pojo.Comment;
-import com.zxp.nowcodercommunity.pojo.DiscussPost;
-import com.zxp.nowcodercommunity.pojo.Page;
-import com.zxp.nowcodercommunity.pojo.User;
+import com.zxp.nowcodercommunity.event.EventConsumer;
+import com.zxp.nowcodercommunity.event.EventProducer;
+import com.zxp.nowcodercommunity.pojo.*;
 import com.zxp.nowcodercommunity.result.Result;
 import com.zxp.nowcodercommunity.security.util.SecurityUtil;
 import com.zxp.nowcodercommunity.service.CommentService;
@@ -22,8 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.zxp.nowcodercommunity.constant.LoginConstant.ENTITY_TYPE_COMMENT;
-import static com.zxp.nowcodercommunity.constant.LoginConstant.ENTITY_TYPE_POST;
+import static com.zxp.nowcodercommunity.constant.LoginConstant.*;
 
 /**
  * 与帖子有关的controller
@@ -37,11 +35,15 @@ public class DiscussPostController {
     private final DiscussPostService discussPostService; // 帖子的service
     private final UserService userService; // User
     private final CommentService commentService;
+    private final EventProducer eventProducer;
+    private final EventConsumer eventConsumer;
 
-    public DiscussPostController(DiscussPostService discussPostService, UserService userService, CommentService commentService) {
+    public DiscussPostController(DiscussPostService discussPostService, UserService userService, CommentService commentService, EventProducer eventProducer, EventConsumer eventConsumer) {
         this.discussPostService = discussPostService;
         this.userService = userService;
         this.commentService = commentService;
+        this.eventProducer = eventProducer;
+        this.eventConsumer = eventConsumer;
     }
 
     @AutoCreateTime // 设置创建时间的字段
@@ -59,6 +61,14 @@ public class DiscussPostController {
         if (rows < 1) {
             throw new Exception("插入失败");
         }
+        // 帖子发布成功需要将新帖子存储在es里面
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH) // 发布帖子
+                .setUserId(SecurityUtil.getUserId())
+                .setEntityId(discussPost.getId())
+                .setEntityType(ENTITY_TYPE_POST);
+        // 传入消费者
+        eventProducer.fireEvent(event);
         return Result.success("插入成功");
     }
 
