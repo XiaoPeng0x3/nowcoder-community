@@ -1,21 +1,57 @@
 package com.zxp.nowcodercommunity.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
-public class DiscussPost {
+/**
+ *  整合elasticsearch
+ *  将discussPost与es建立连接
+ */
+@Document(indexName = "discusspost", createIndex = true)
+public class DiscussPost implements Serializable {
 
+    // 建立注解
+    @Id
     private int id;
+
+    // 普通字段
+    @Field(type = FieldType.Integer)
     private int userId;
+
+    // 词条拆分
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String title;
+
+    @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     private String content;
+
+    @Field(type = FieldType.Integer)
     private int type;
+
+    @Field(type = FieldType.Integer)
     private int status;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+
+    @Field(type = FieldType.Date,
+            format = {},
+            pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,
+            pattern = "yyyy-MM-dd HH:mm:ss",
+            timezone = "GMT+8")
     private LocalDateTime createTime;
+
+
+
+    @Field(type = FieldType.Integer)
     private int commentCount;
+
+    @Field(type = FieldType.Double)
     private double score;
 
     public int getId() {
