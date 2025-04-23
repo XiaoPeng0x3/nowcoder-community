@@ -76,9 +76,18 @@ public class CommentController {
 
         // 处理事件
         eventProducer.fireEvent(event);
-
         if (rows < 0) {
             Result.error("更新失败");
+        }
+        // 触发发帖事件，因为评论其实是一种修改帖子的操作
+        if (comment.getEntityType() == ENTITY_TYPE_POST) { // 帖子的评论
+            // 触发评论事件
+            event = new Event()
+                    .setTopic(TOPIC_PUBLISH)
+                    .setUserId(comment.getUserId())
+                    .setEntityType(ENTITY_TYPE_POST)
+                    .setEntityId(comment.getEntityId());
+            eventProducer.fireEvent(event);
         }
         return Result.success(rows);
     }
